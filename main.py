@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import csv
 
 
 print("============= CHOICES================")
@@ -8,7 +9,8 @@ print("2.INSERT IN TABLE \n")
 print("3.SHOW TABLE \n")
 print("4.UPDATE TABLE'S COLUMN \n")
 print("5.DELETE TABLE'S COLUMN \n")
-print("6.EXIT \n\n")
+print("6.CREATE NEW COLUMN \n")
+print("7.EXIT \n\n")
 
 
 while True:
@@ -32,23 +34,41 @@ while True:
         def insert_db():
 
                 while True:
+                    records = []
+                    while True:
+                        #for-loop and then record gets updated, name set in tuple
                         name33 = input("Enter your name")
-                        age10= int(input("Enter your age"))
-                        email10 = str(input("Enter your email"))
-                                
-                        if name33.isdigit():
-                                print("Invalid")
-                                break
-                        else:
-                          print(f"{name33}")
-                        conn = sqlite3.connect('data.db')
-                        c=conn.cursor()
-                        c.execute("INSERT INTO users(name,age,email) VALUES(?,?,?)",(name33,age10,email10,))
-                        # c.execute("INSERT INTO users(age) VALUES(?)",(age10,))
+                        age10= (input("Enter your age"))
+                        email10 = (input("Enter your email"))
 
-                        conn.commit()
-                        conn.close()
-                        break
+                        x = (name33,age10,email10)
+                        records.append(x)
+
+                        for record in records:
+                                print(record)
+
+                        # Ask if the user wants to add another record
+                        cont = input("Do you want to add another record? (yes/no): ").strip().lower()
+                        if cont!= 'yes':
+                                break
+
+                        print("Final records:")
+
+                        for record in records:
+                          print(record)
+                        # if name33.isdigit():
+                        #         print("Invalid")
+                        #         break
+                        # else:
+                        #   print(f"{name33}")
+                        # conn = sqlite3.connect('data.db')
+                        # c=conn.cursor()
+                        # c.execute("INSERT INTO users(name,age,email) VALUES(?,?,?)",(name33,age10,email10,))
+                        # # c.execute("INSERT INTO users(age) VALUES(?)",(age10,))
+
+                        # conn.commit()
+                        # conn.close()
+                        # break
 
         insert_db()
             
@@ -110,11 +130,26 @@ while True:
             delete_data()
 
     elif(x == 6):
+        def create_column():
+                conn = sqlite3.connect('data.db')
+                c=conn.cursor()
+                new_column=(input("Enter new title name"))
+                query = f"ALTER TABLE users ADD {new_column} VARCHAR(20)"
+                c.execute(query )
+                conn.commit()
+                conn.close()
+        create_column()
+
+    elif(x==7):
+        
+
             print("Exit")
             print("Invalid Number and go to each number")
             x=int(input("Enter your choice:"))
             print(f"{x}")
             os.system("clear")
+            
+            
             
     else:
             print("Invalid Number and go to each number")
